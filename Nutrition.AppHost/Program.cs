@@ -1,6 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var apiService = builder.AddProject<Projects.Nutrition_ApiService>("apiservice");
+var sql = builder.AddSqlServer("sql")
+                 .AddDatabase("sqldatabase");
+
+var apiService = builder.AddProject<Projects.Nutrition_ApiService>("apiservice")
+    .WithReference(sql);
 
 builder.AddProject<Projects.Nutrition_Web>("webfrontend")
     .WithExternalHttpEndpoints()

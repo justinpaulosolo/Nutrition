@@ -1,4 +1,8 @@
+using Nutrition.ApiService.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSqlServerDbContext<NutritionDataContext>("sqldatabase");
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
@@ -30,6 +34,20 @@ app.MapGet("/weatherforecast", () =>
 });
 
 app.MapDefaultEndpoints();
+
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<NutritionDataContext>();
+        context.Database.EnsureCreated();
+    }
+}
+else
+{
+    app.UseExceptionHandler("/error", createScopeForErrors: true);
+    app.UseHsts();
+}
 
 app.Run();
 
