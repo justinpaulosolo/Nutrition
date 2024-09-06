@@ -1,4 +1,5 @@
 using Nutrition.ApiService.Data;
+using Nutrition.ApiService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
+app.MapIdentityApi<NutritionUser>();
 app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
