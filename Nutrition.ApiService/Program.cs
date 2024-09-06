@@ -1,9 +1,17 @@
+﻿using Microsoft.AspNetCore.Identity;
 using Nutrition.ApiService.Data;
 using Nutrition.ApiService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 👇 Add the authorization services
+builder.Services.AddAuthorization();
+
 builder.AddSqlServerDbContext<NutritionDataContext>("sqldatabase");
+
+builder.Services
+    .AddIdentityApiEndpoints<NutritionUser>()
+    .AddEntityFrameworkStores<NutritionDataContext>();
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
@@ -34,7 +42,7 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
-app.MapIdentityApi<NutritionUser>();
+
 app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
@@ -50,7 +58,7 @@ else
     app.UseExceptionHandler("/error", createScopeForErrors: true);
     app.UseHsts();
 }
-
+app.UseAuthorization(); // 👈 Add Authorization middleware
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
