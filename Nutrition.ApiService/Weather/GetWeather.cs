@@ -23,6 +23,6 @@ public class GetWeather : IEndpoint
             ))
             .ToArray();
 
-        return forecast; // Return the forecast data
+        return forecast;
     }
 }
