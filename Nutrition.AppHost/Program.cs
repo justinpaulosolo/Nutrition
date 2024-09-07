@@ -1,7 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var sql = builder.AddSqlServer("sql")
-                 .AddDatabase("sqldatabase");
+                 .AddDatabase("nutritiondatabase");
 
 var apiService = builder.AddProject<Projects.Nutrition_ApiService>("apiservice")
     .WithReference(sql);

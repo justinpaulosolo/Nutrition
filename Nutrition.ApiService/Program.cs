@@ -1,23 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Nutrition.ApiService;
 using Nutrition.ApiService.Data;
 using Nutrition.ApiService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 👇 Add the authorization services
-builder.Services.AddAuthorization();
-
-builder.AddSqlServerDbContext<NutritionDataContext>("sqldatabase");
-
-builder.Services
-    .AddIdentityApiEndpoints<NutritionUser>()
-    .AddEntityFrameworkStores<NutritionDataContext>();
-
-// Add service defaults & Aspire components.
-builder.AddServiceDefaults();
-
-// Add services to the container.
-builder.Services.AddProblemDetails();
+builder.AddServices();
 
 var app = builder.Build();
 
