@@ -1,0 +1,66 @@
+﻿@page "/register"
+@using Nutrition.Web.DTOs
+@inject NavigationManager Navigation
+@inject AuthApiClient AuthClient
+@inject ILogger<Register> Logger
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3>Register</h3>
+            <form method="post" @onsubmit="Submit" @formname="user-registration-form">
+                <AntiforgeryToken />
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" @bind-value="Model!.Email" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" @bind="Model!.Password" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" @bind="Model!.ConfirmPassword" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private UserRegistrationModel? Model { get; set;}
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private async void Submit()
+    {
+        var userRegistrationDTO = new UserRegistrationDTO
+        {
+            Email = Model!.Email,
+            Password = Model!.Password,
+        };
+
+        var isSuccess = await AuthClient.Register(userRegistrationDTO);
+
+        if (isSuccess)
+        {
+            Console.WriteLine("Good");
+        }
+        else
+        {
+            Console.WriteLine(isSuccess);
+        }
+        
+    }
+    public class UserRegistrationModel
+    {
+        public string Email { get; set; } = string.Empty; 
+        public string Password { get; set; } = string.Empty; 
+        public string ConfirmPassword { get; set; } = string.Empty; 
+    }
+}

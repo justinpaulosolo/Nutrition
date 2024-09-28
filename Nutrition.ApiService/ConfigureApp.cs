@@ -1,4 +1,5 @@
 ﻿using Nutrition.ApiService.Data;
+using Nutrition.ApiService.Models;
 
 namespace Nutrition.ApiService;
 
@@ -22,6 +23,7 @@ public static class ConfigureApp
             app.UseHsts();
         }
         app.UseAuthorization();
+        app.MapIdentityApi<NutritionUser>();
         app.Run();
     }
 }
